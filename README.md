@@ -19,4 +19,4 @@ Terdapat 3 tahapan sebelum melakukan pengukuran dan penentuan titik las yaitu ka
 ## Kalibrasi Kamera
 Kalibrasi kamera dilakukan untuk menghilangkan distors lensa pada kamera yang digunakan. Distorsi lensa yang terjadi jika dibiarkan akan memengaruhi hasil pengukuran oleh karna itu diperlukan pengkoreksian citra dari hasil yang didapatkan.
 
-![algoritma program kalibrasi kamera](/Image-Markdown/algoritmKalibrasiKamera.png)
+![algoritma program kalibrasi kamera](/image-markdown/algoritmKalibrasiKamera.png)
