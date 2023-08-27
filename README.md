@@ -13,4 +13,8 @@ Pastikan *library* sudah terinstall dengan melihat di daftar *packages in enviro
 conda list
 ```
 
-# Tahapan Program
+# Tahapan Pengunaan Program
+Terdapat 3 tahapan sebelum melakukan pengukuran dan penentuan titik las yaitu kalibrasi kamera, *set-up* kamera, dan kalibrasi piksel. Jika semua tahapan sudah dilakukan maka program untuk pengukuran dan penentuan titik las dapat dilakukan.
+
+## Kalibrasi Kamera
+Kalibrasi kamera dilakukan untuk menghilangkan distors lensa pada kamera yang digunakan. Distorsi lensa yang terjadi jika dibiarkan akan memengaruhi hasil pengukuran oleh karna itu diperlukan pengkoreksian citra dari hasil yang didapatkan. 
