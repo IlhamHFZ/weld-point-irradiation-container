@@ -4,4 +4,13 @@ Penelitian ini tentang pemanfaatan *image processing* pengaplikasian pengukuran 
 # *Programming Requirements*
 Program ini menggunakan bahas pemrograman Python versi 3.11 yang ditulis di JupyterLab. Program ini dikembangakan dalam sistem operasi Windows 8.
 
-Program ini memerlukan *library* OpenCV, matplotlib, numpy, glob, dan pandas.
+Berikut ini adalah link untuk [*install* Anaconda](https://www.anaconda.com/download). Install *library* yang dibutuhkan yaitu ```OpenCV```, ```matplotlib```, ```numpy```, ```glob```, dan ```pandas``` di Anaconda Prompt dengan perintah di bawah ini.
+```
+conda install opencv matplotlib numpy glob pandas
+```
+Pastikan *library* sudah terinstall dengan melihat di daftar *packages in environment* dengan perintah.
+```
+conda list
+```
+
+# Tahapan Program
