@@ -22,4 +22,4 @@ Kalibrasi kamera dilakukan untuk menghilangkan distors lensa pada kamera yang di
 ![algoritma program kalibrasi kamera](/image-markdown/algoritmKalibrasiKamera.png)
 
 ## Kalibrasi Piksel
-Kalibrasi piksel dilakukan untuk
+Kalibrasi piksel dilakukan untuk mengkonversi satuan piksel ke satuan milimeter. Kalibrasi piksel dilakukan dengan mendeteksi citra kotak yang berkontras dengan latar belakang 
