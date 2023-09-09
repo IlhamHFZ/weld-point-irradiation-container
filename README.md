@@ -1,79 +1,80 @@
-# Pengembangan *Image Processing* untuk Penentuan Posisi *Welding Torch* Berdasarkan Ketebalan Kapsul Iradiasi
-Penelitian ini tentang pemanfaatan *image processing* pengaplikasian pengukuran dan penentuan titik las berdasarkan ketebalan untuk kapsul iradiasi. Ketepatan dalam proses pengelasan bagian kapsul iradiasi sangat diperlukan dikarenakan mengingat kebutuhan spesifikasi kapsul iradiasi berupa kedap udara dan kedap air untuk menjaga keamanan reaktor nuklir untuk proses aktivasi material menjadi radioisotop. Pengukuran dilakukan menggunakan *edge detection* untuk mengukur ketebalan bagian kapsul iradiasi lalu dari hasil pengukuran dilakukan perhitungan untuk penentuan titik las.
+# Development of Image Processing for Welding Torch Position Based on The Thickness of Irradiation Container
+This research is about the utilization of image processing for the application of measurement and determination of welding points based on thickness for irradiation container. Accuracy in the welding process of irradiation capsule parts is very necessary because considering the need for irradiation capsule specifications in the form of airtight and watertight to maintain the safety of nuclear reactors for the activation process of materials into radioisotopes. Measurements are made using *edge detection* to measure the thickness of the irradiation capsule parts and then from the measurement results, calculations are made to determine the weld point.
 
-# *Programming Requirements*
-Program ini menggunakan bahas pemrograman Python versi 3.11 yang ditulis di JupyterLab. Program ini dikembangakan dalam sistem operasi Windows 8.
+# Programming Requirements
+This program uses the Python programming language version 3.11 written in JupyterLab. This program is developed in Windows 8 operating system.
 
-Berikut ini adalah link untuk [*install* Anaconda](https://www.anaconda.com/download). Install *library* yang dibutuhkan yaitu ```OpenCV```, ```matplotlib```, ```numpy```, ```glob```, dan ```pandas``` di Anaconda Prompt dengan perintah di bawah ini.
+Here is the link to [*install* Anaconda](https://www.anaconda.com/download). Install the required library namely ``OpenCV``, ``matplotlib``, ``numpy``, ``glob``, and ``pandas`` in Anaconda Prompt with the command below.
 ```
 conda install opencv matplotlib numpy glob pandas
 ```
-Pastikan *library* sudah terinstall dengan melihat di daftar *packages in environment* dengan perintah.
+Make sure the library is installed by looking at the *packages in environment* list with the command.
 ```
 conda list
 ```
 
-# Tahapan Pengunaan Program
-Terdapat 3 tahapan sebelum melakukan pengukuran dan penentuan titik las yaitu kalibrasi kamera, *set-up* kamera, dan kalibrasi piksel. Jika semua tahapan sudah dilakukan maka program untuk pengukuran dan penentuan titik las dapat dilakukan.
+# Stages of using the program
+There are 3 steps before measuring and determining the weld point, namely camera calibration, camera set-up, and pixel calibration. If all stages have been carried out, the program for measuring and determining the weld point can be carried out.
 
-## Kalibrasi Kamera
-Kalibrasi kamera dilakukan untuk menghilangkan distors lensa pada kamera yang digunakan. Distorsi lensa yang terjadi jika dibiarkan akan memengaruhi hasil pengukuran oleh karna itu diperlukan pengkoreksian citra dari hasil yang didapatkan. Untuk melakukan kalibrasi kamera diperlukan sekumpulan citra papan catur. Kalibrasi kamera yang dilakukan hanya berlaku untuk jenis kamera yang digunakan dan pengaturan panjang fokal yang digunakan.
+## Camera Calibration
+Camera calibration is done to eliminate lens distortion on the camera used. Lens distortion that occurs if left unchecked will affect the measurement results, therefore image correction is needed from the results obtained. To perform camera calibration, a set of chessboard images is required. The camera calibration performed only applies to the type of camera used and the focal length setting used.
 
 <p align="center">
 <img src="/image-markdown/algoritmKalibrasiKamera.png" width=30% align="center">
 </p>
 
-## _set-up_ Kamera
-_set-up_ bertujuan untuk pengambilan citra yang diinginkan dalam keadaan yang sama dengan objek yang ingin diolah citranya. Pengambilan citra dilakukan dengan mengatur posisi kamera secara vertikal tegak lurus dari permukaan kapsul iradiasi. Posisi diambil untuk menghidari distorsi geometrik. Kamera yang digunakan kamera industri _webcast_ panjang fokal lensa 5-50 mm 720p dengan sambungan USB. Skema pengambilan citra ditunjukan di bawah ini
+## Camera Set-up
+The set-up aims to capture the desired image in the same state as the object whose image is to be processed. Image capture is performed by positioning the camera vertically perpendicular to the surface of the irradiation capsule. The position was taken to avoid geometric distortion. The camera used was a 5-50 mm 720p focal length industrial camera with a USB connection. The image capture scheme is shown below
 
 <p align="center">
 <img src="/image-markdown/skemakamera.png" width=30% align="center">
 </p>
 
-Tahapan ini akan menghasilkan sebuah citra kapsul iradiasi seperti gambar di bawah ini.
+This stage will produce an image of the irradiation container as shown below.
 
 <p align="center">
 <img src="/Dataset/A1.jpg" width=70% align="center">
 </p>
 
-## Kalibrasi Piksel
-Kalibrasi piksel dilakukan untuk mengkonversi satuan piksel ke satuan milimeter. Kalibrasi piksel dilakukan dengan mendeteksi citra kotak berkontras dengan latar belakang yang diketahui dimensi fisiknya. Citra kotak didapatkan dengan pengambilan citra seperti skema pada tahapan _set-up_ kamera. Citra kotak diolah sehingga didapatkan dimensinya dalam satuan piksel. Dengan diketahuinya dimensi dalam piksel dan satuan panjang milimeter, faktor kalibrasi dapat diketahui dengan menghitung dengan persamaan di bawah ini.
+## Pixel Calibration
+Pixel calibration is performed to convert pixel units to millimeter units. Pixel calibration is performed by detecting an image of a box with a background contrast whose physical dimensions are known. The box image is obtained by taking an image as schematized in the camera set-up stage. The box image is processed to obtain its dimensions in pixels. With the dimensions in pixels and length in millimeters known, the calibration factor can be found by calculating with the equation below.
 
-$$\text{Faktor Kalibrasi Piksel}=\frac{\text{Lebar Objek (mm)}}{\text{Jumlah Piksel (piksel)}}$$
+$$\text{Pixel Calibration Factor}=\frac{\text{Object Width (mm)}}{\text{Number of Pixels (pixel)}}$$
 
 <p align="center">
 <img src="/image-markdown/algoritmKalibrasiPiksel.png" width=30% align="center">
 </p>
 
 ## Pengolahan Citra Pengukuran dan Penentuan Titik las
-Citra kapsul iradiasi yang diambil akan diolah untuk mendapatkan 2 ROI (_Region of Interest_) yaitu ROI tutup dan ROI tabung. Ketebalan bagian kapsul iradiasi diukur dari ROI yang didapatkan. Pengukuran dilakukan dengan menghitung panjang tiap ketebalan tiap derajat. Panjang garis dapat dihitung dengan persamaan di bawah ini.
+The captured image of the irradiation container will be processed to obtain 2 ROI (Region of Interest), namely the ROI of the lid and the ROI of the tube. The thickness of the irradiation container is measured from the ROI obtained. The measurement is done by calculating the length of each thickness of each degree. The length of the line can be calculated with the equation below.
 
-$$\text{Panjang Garis}=\sqrt{(x_{1}-x_{2})^{2}+(y_{1}-y_{2})^{2}}$$
+$$\text{Line Length}=\sqrt{(x_{1}-x_{2})^{2}+(y_{1}-y_{2})^{2}}$$
 
-Dari hasil pengukuran tiap bagian per derajat selanjutnya menghitung posisi titik las dengan persamaan di bawah ini.
+From the measurement results of each part per degree, then calculate the position of the weld point with the equation below.
 
-$$\text{Posisi Titik Las}=\frac{\text{Tebal Bibir Tutup}+\text{Tebal Tabung}}{2}$$
+$$\text{Point Weld}=\frac{\text{Cap Thickness}+\text{Tube Thickness}}{2}$$
 
-Pengolahan citra kapsul iradiasi dilakukan dengan _flowchart_ di bawah ini.
+Image processing of irradiation containers is performed with the flowchart below.
 
 <p align="center">
   <img src="/image-markdown/algoritmprogramta.png" width=50% align="center">
 </p>
 
-# Hasil
-Proses pemisahan bagian kapsul iradiasi, program melakukan deteksi lingkaran dengan transformasi Hough. Diperlukan 3 lingkaran untuk bisa memisahkan tiap bagian kapsul iradiasi sehingga dapat menghasilkan ROI tutup dan ROI tabung. Hasil deteksi lingkaran dapat dilihat gambar di bawah ini.
+# Result
+In the process of separating the irradiation container parts, the program performs circle detection with Hough transform. It takes 3 circles to separate each part of the irradiation capsule so as to produce the ROI of the lid and the ROI of the tube. The result of circle detection can be seen in the figure below.
 
 <p align="center">
   <img src="/image-markdown/7.B2-Circle.jpg" width=30% align="center">
 </p>
 
-Hasil segmentasi akan memengaruhi hasil pengukuran dan penentuan titik las. berikut ini adalah hasil segmentasi untuk tutup dan tabung.
+The segmentation results will affect the measurement results and weld point determination. the following are the segmentation results for the cap and tube.
 
 <p align="center">
   <img src="/image-markdown/8.B2-Cap.jpg" width=30% alt="ROI Tutup"> <img src="/image-markdown/9.B2-Tube.jpg" width=30% alt="ROI Tabung">
 </p>
 
-Langkah selanjutnya yaitu mengukur ketebalan bagian kapsul iradiasi tiap derajat dari tepi ke tepi. Hasil pengukuran selanjutnya akan menentukan titik las. Didapatkan hasil pengukuran ketebalan tutup dan tabung kapsul iradiasi serta titik las berupa grafik.
+The next step is to measure the thickness of the irradiation container section every degree from edge to edge. The measurement results will then determine the weld point. The results of measuring the thickness of the lid and tube of the irradiation container as well as the weld point were obtained in the form of a graph.
+
 <p align="center">
   <img src="/image-markdown/hasiltutup.png" width=60%>
   <img src="/image-markdown/hasiltabung.png" width=60%>
